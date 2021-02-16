@@ -56,6 +56,8 @@ public class ClientConnection implements Runnable {
         }
     }
 
+    /// irgendein kommentar
+
     //sends message back to client
     public void sendMessage(String message) {
         try {
