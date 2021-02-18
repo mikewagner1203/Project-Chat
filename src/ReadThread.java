@@ -1,15 +1,12 @@
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ReadThread implements Runnable {
     // Fields
     Socket socket;
     NetChatClient client;
     DataInputStream input;
-    List <String> connectedUsers = new ArrayList<>();
 
     // Constructor
     public ReadThread(Socket socket, NetChatClient client) {
@@ -30,15 +27,22 @@ public class ReadThread implements Runnable {
                 String message = input.readUTF();
 
                 // Works but output not Good !!!!
-                if(message.startsWith("\n" + "--> ")) {
-                    client.chatArea.appendText("\n" + message);
-                }
 
-                else if(message.startsWith("ListCall:")) {
+                if(message.startsWith("ListCall:")) {
                     String[] userdata = message.split(":");
-                    connectedUsers.add(userdata[1]);
-                    client.userList.appendText(userdata[1]);
-                    System.out.println(userdata[1]);
+                    String[] users = userdata[1].split("[,]");
+                    client.connectedUsers.add(users[users.length-1]); //<--Good till here
+
+
+                    client.userList.appendText("\n" + client.userList.toString());
+
+
+
+
+
+                 //   String[] user = userdata[1].split(",");
+                  //  System.out.println(Arrays.toString(user));
+
 
                 } else {
                     client.chatArea.appendText("\n" + message); // show the "has joined" message from server broadcast
@@ -52,5 +56,4 @@ public class ReadThread implements Runnable {
             }
         }
     }
-
 }

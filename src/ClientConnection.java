@@ -9,7 +9,6 @@ public class ClientConnection implements Runnable {
     Socket socket;
     NetChatServer server;
     String username = "";
-    ArrayList<String> userList = new ArrayList<>();
 
     // Create IO Streams
     DataInputStream input;
@@ -56,8 +55,6 @@ public class ClientConnection implements Runnable {
         }
     }
 
-    /// irgendein kommentar
-
     //sends message back to client
     public void sendMessage(String message) {
         try {
@@ -69,14 +66,12 @@ public class ClientConnection implements Runnable {
     }
 
     public void process(String nameCall) {
+
         if(nameCall.startsWith("Protocol: ")) {
             this.username = nameCall.substring(20);
-            userList.add(this.username);
+            server.userList.add(this.username);
             server.broadcast("\n" + "--> "+ this.username + " <-- has joined");
-            server.broadcast("ListCall:" + userList);
-         //   output.flush();
-
-         //  server.serverStatusInfo.appendText("userlist: " + server.userList + "\n");
+            server.broadcast("ListCall:" + server.userList);
         }
     }
 
@@ -88,6 +83,7 @@ public class ClientConnection implements Runnable {
             System.out.println(message + "<--Testmessage"); // for testing
 
             server.privateMessage("\n" + "[" + username + " flüstert]--> " + message.substring(message.indexOf("]") + 1), targetUser);
+
         } else {
             // send Message via broadcast method from server
             server.broadcast("\n" + "[" + username + "]: " + message);

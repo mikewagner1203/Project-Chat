@@ -16,7 +16,7 @@ public class NetChatServer extends Application {
 
     TextArea serverStatusInfo;
     ScrollPane scrollPane;
-    //ArrayList<String> userList = new ArrayList<>();
+    ArrayList<String> userList = new ArrayList<>();
     ArrayList<ClientConnection> clientList = new ArrayList<>();
     DataOutputStream output;
 
