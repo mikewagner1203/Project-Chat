@@ -11,7 +11,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
 
-
 public class NetChatServer extends Application {
 
     TextArea serverStatusInfo;

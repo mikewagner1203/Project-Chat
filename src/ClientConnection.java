@@ -2,7 +2,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class ClientConnection implements Runnable {
     // Fields
@@ -76,13 +75,17 @@ public class ClientConnection implements Runnable {
     }
 
     public void chatListener(String message) {
-        if(message.startsWith("[")) {
-            String targetUser = message.substring(message.indexOf("[") +1,message.indexOf("]"));
+        if(message.startsWith("<")) {
+            String targetUser = message.substring(message.indexOf("<") + 1, message.indexOf(">"));
+            server.privateMessage("\n" + "[" + username + " flüstert]--> " + message.substring(message.indexOf(">") + 1), targetUser);
+            if(!server.userList.contains(targetUser)) {
+                server.privateMessage("\n" + targetUser + " is not available ! ", username);
+            }
 
-            System.out.println(targetUser + "<--Target User"); // for testing
-            System.out.println(message + "<--Testmessage"); // for testing
-
-            server.privateMessage("\n" + "[" + username + " flüstert]--> " + message.substring(message.indexOf("]") + 1), targetUser);
+        } else if(message.equals("/exit")) {
+            server.userList.remove(this.username);
+            server.broadcast("ListCall:" + server.userList);
+            server.broadcast("\n" + "--> "+ this.username + " <-- has left");
 
         } else {
             // send Message via broadcast method from server

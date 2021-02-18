@@ -1,8 +1,6 @@
 import javafx.application.Application;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,17 +8,12 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -166,7 +159,6 @@ public class NetChatClient extends Application {
         hbox2.setSpacing(5);
         hbox3.setSpacing(15);
 
-
         ScrollPane scrollPane = new ScrollPane(); //pane to display text messages
         ScrollPane userPane = new ScrollPane();
 
@@ -234,17 +226,15 @@ public class NetChatClient extends Application {
             try {
                 //get message
                 String message = msgInput.getText();
-                if (message.equalsIgnoreCase("/exit")) {
-                    input.close();
-                    output.close();
-                    Prime.setScene(new Scene(connectScreen().getRoot()));
-                    // output.writeUTF(getUsername() + "<--- has left the Chat--->");
-                   // System.exit(0);
-                }
 
                 //if message is empty, just return : don't send the message
                 if (message.length() == 0) {
                     return;
+                }
+
+                if (message.equalsIgnoreCase("/exit")) {
+                    Prime.setScene(connectScreen());
+                   // System.exit(0);
                 }
 
                 //send message to server

@@ -1,6 +1,7 @@
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class ReadThread implements Runnable {
     // Fields
@@ -29,20 +30,8 @@ public class ReadThread implements Runnable {
                 // Works but output not Good !!!!
 
                 if(message.startsWith("ListCall:")) {
-                    String[] userdata = message.split(":");
-                    String[] users = userdata[1].split("[,]");
-                    client.connectedUsers.add(users[users.length-1]); //<--Good till here
-
-
-                    client.userList.appendText("\n" + client.userList.toString());
-
-
-
-
-
-                 //   String[] user = userdata[1].split(",");
-                  //  System.out.println(Arrays.toString(user));
-
+                    client.userList.clear();
+                    fillUserList(message);
 
                 } else {
                     client.chatArea.appendText("\n" + message); // show the "has joined" message from server broadcast
@@ -54,6 +43,19 @@ public class ReadThread implements Runnable {
                 e.printStackTrace();
                 break;
             }
+        }
+    }
+
+    private void fillUserList(String message) {
+        String[] userdata = message.split(":");
+        String[] users = userdata[1].split("[,]");
+        client.connectedUsers.clear();
+        for(int i = 0; i< users.length;i++) {
+            client.connectedUsers.add(users[i]);
+        }
+        client.userList.appendText("Users Online: " + client.connectedUsers.size() + "\n"); // adds list headline and users online count
+        for (int j = 0; j< client.connectedUsers.size(); j++) {
+            client.userList.appendText(Arrays.toString(client.connectedUsers.get(j).split(",")) + "\n");
         }
     }
 }
