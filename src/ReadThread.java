@@ -50,12 +50,11 @@ public class ReadThread implements Runnable {
         String[] userdata = message.split(":");
         String[] users = userdata[1].split("[,]");
         client.connectedUsers.clear();
-        for(int i = 0; i< users.length;i++) {
-            client.connectedUsers.add(users[i]);
-        }
+        client.connectedUsers.addAll(Arrays.asList(users));
         client.userList.appendText("Users Online: " + client.connectedUsers.size() + "\n"); // adds list headline and users online count
         for (int j = 0; j< client.connectedUsers.size(); j++) {
-            client.userList.appendText(Arrays.toString(client.connectedUsers.get(j).split(",")) + "\n");
+
+            client.userList.appendText(Arrays.asList(client.connectedUsers.get(j)) + "\n");
         }
     }
 }

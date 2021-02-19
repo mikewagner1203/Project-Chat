@@ -69,7 +69,7 @@ public class ClientConnection implements Runnable {
         if(nameCall.startsWith("Protocol: ")) {
             this.username = nameCall.substring(20);
             server.userList.add(this.username);
-            server.broadcast("\n" + "--> "+ this.username + " <-- has joined");
+            server.broadcast("\n" + "--> "+ this.username + " <-- has joined \n");
             server.broadcast("ListCall:" + server.userList);
         }
     }
@@ -77,19 +77,20 @@ public class ClientConnection implements Runnable {
     public void chatListener(String message) {
         if(message.startsWith("<")) {
             String targetUser = message.substring(message.indexOf("<") + 1, message.indexOf(">"));
-            server.privateMessage("\n" + "[" + username + " flüstert]--> " + message.substring(message.indexOf(">") + 1), targetUser);
+            server.privateMessage("[" + username + " flüstert]--> " + message.substring(message.indexOf(">") + 1) +"\n", targetUser);
+            server.privateMessage("[Du flüsterst an: " + targetUser + "]--> " + message.substring(message.indexOf(">") + 1) +"\n", this.username);
             if(!server.userList.contains(targetUser)) {
-                server.privateMessage("\n" + targetUser + " is not available ! ", username);
+                server.privateMessage(targetUser + " is not available ! \n", username);
             }
 
         } else if(message.equals("/exit")) {
             server.userList.remove(this.username);
             server.broadcast("ListCall:" + server.userList);
-            server.broadcast("\n" + "--> "+ this.username + " <-- has left");
+            server.broadcast("\n" + "--> "+ this.username + " <-- has left \n");
 
         } else {
             // send Message via broadcast method from server
-            server.broadcast("\n" + "[" + username + "]: " + message);
+            server.broadcast("[" + this.username + "]: " + message);
         }
 
         // not necessary just displays Message from Client in Server Window

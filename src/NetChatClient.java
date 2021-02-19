@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -30,7 +31,7 @@ public class NetChatClient extends Application {
     String portNr;
     String username;
     Stage Prime;
-    List<String> connectedUsers = new ArrayList<String>();
+    List<String> connectedUsers = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) {
@@ -38,6 +39,7 @@ public class NetChatClient extends Application {
        // primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("Project NetChat");
         primaryStage.setScene(connectScreen());
+       // connectScreen().getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         primaryStage.show();
     }
 
@@ -47,6 +49,7 @@ public class NetChatClient extends Application {
 
     private Scene connectScreen() {
         GridPane grid = new GridPane();
+        grid.getStyleClass().add("grid");
         grid.setStyle("-fx-background-color:linear-gradient(#61a2b1, #2A5058)");
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -80,13 +83,12 @@ public class NetChatClient extends Application {
         errorMsg.setTranslateX(70);
 
         Button btnQuit = new Button("Quit");
-        btnQuit.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
-        btnQuit.setOnAction(actionEvent ->{
-            System.exit(0);
-        });
+        btnQuit.setId("button");
+      //  btnQuit.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
+        btnQuit.setOnAction(actionEvent -> Platform.exit());
 
         Button btnConnect = new Button("Connect to NetChat");
-        btnConnect.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
+      //  btnConnect.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
         btnConnect.setOnAction(actionEvent -> {
             String hostAddress = hostInput.getText();
             portNr = portInput.getText();
@@ -103,7 +105,6 @@ public class NetChatClient extends Application {
 
                 try {
                     // Create a socket to connect to the server
-                   //Socket socket = new Socket("localhost",33030);
                     Socket socket = new Socket(hostAddress, Integer.parseInt(portNr));
 
                     // Creates an output stream to send data to the server
@@ -111,7 +112,6 @@ public class NetChatClient extends Application {
                     input = new DataInputStream(socket.getInputStream());
 
                     Prime.setScene(NetChatView());
-                    // chatArea.appendText("Hello " + username + ", welcome to NetChat" + "\n");
 
                     // creates thread to read message from server continuously
                     ReadThread readMsg = new ReadThread(socket, this);
@@ -129,7 +129,6 @@ public class NetChatClient extends Application {
 
         ButtonBar btnbar = new ButtonBar();
         btnbar.getButtons().addAll(btnConnect,btnQuit);
-      //  btnbar.translateXProperty().setValue(-30);
         btnConnect.setTranslateX(-58);
         grid.add(btnbar,1,4);
 
@@ -150,8 +149,8 @@ public class NetChatClient extends Application {
 
         HBox hbox1 = new HBox(); // Horizontal-box to hold message input and send button
         HBox hbox2 = new HBox(); // Horizontal-box to hold chatarea and userlist
-        HBox hbox3 = new HBox();
-        hbox1.setEffect(new DropShadow(  10, 0.6, 1 , Color.BLACK));
+        HBox hbox3 = new HBox(); // Horizontal-box to hold headline and serverinfo
+       // hbox1.setEffect(new DropShadow(  10, 0.6, 1 , Color.BLACK));
         hbox2.setEffect(new DropShadow(  10, 0.6, 1 , Color.BLACK));
         hbox1.setBackground(Background.EMPTY);
         hbox2.setBackground(Background.EMPTY);
@@ -164,12 +163,10 @@ public class NetChatClient extends Application {
 
         Text headline = new Text("Project NetChat");
         headline.setStyle("-fx-font: 35px Verdana; -fx-fill: #9bc9d4; -fx-stroke: black;-fx-text-alignment: center; -fx-stroke-width: 1; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 ); ");
-        // define textarea for chatmessages and properties for responsive size
-        chatArea = new TextArea();
-     //   chatArea.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        chatArea.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 15; -fx-border-radius: 10; -fx-font-weight: 700; -fx-border-color: lightgrey; -fx-border-width: 1; -fx-border: gone; -fx-text-fill: #000000; -fx-background-color: transparent; -fx-control-inner-background: #549bab;");
-        //  chatArea.setStyle("-fx-control-inner-background:#61a2b1; -fx-text-fill: #000000;");
+        // define textarea for chatmessages
+        chatArea = new TextArea();
+        chatArea.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 15; -fx-border-radius: 10; -fx-font-weight: 600; -fx-border-color: lightgrey; -fx-border-width: 1; -fx-border: gone; -fx-text-fill: #000000; -fx-background-color: transparent; -fx-control-inner-background: #549bab;");
         chatArea.setEditable(false); // makes that text in the chatArea can not be edited after display
 
         // sets size for scrollPane to fit chatArea
@@ -180,39 +177,34 @@ public class NetChatClient extends Application {
 
         userList = new TextArea("Connected Users: " );
         userList.setEditable(false);
-       // userList.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         userList.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 5; -fx-border-color: lightgrey; -fx-border-width: 0; -fx-border: gone; -fx-text-fill: #000000; -fx-background-color: transparent; -fx-control-inner-background: #549bab; ");
 
         // set size for userPane to fit userlist
         userPane.setContent(userList);
         userPane.setFitToHeight(true);
         userPane.setPrefWidth(200);
-       // userPane.setFitToWidth(true);
         userPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         // define textfield for message input and styling
         msgInput = new TextField();
         msgInput.setPrefHeight(30);
-      //  msgInput.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         msgInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 10; -fx-border-color: lightgrey; -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
         msgInput.setPromptText("New message....");
 
         // define textfield for Server status info
         serverInfo = new TextArea();
         serverInfo.setPrefHeight(35);
-       // serverInfo.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
         serverInfo.setStyle("-fx-control-inner-background: black; -fx-font-family: 'Quicksand'; -fx-font-size: 13; -fx-border-color: lightgrey; -fx-border-width: 2; -fx-text-fill: #00ff00; ");
         serverInfo.setEditable(false);
 
         // define Send-button and styling
         Button btnSend = new Button("Send");
-       // btnSend.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         btnSend.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14;-fx-font-weight: 700; -fx-border-radius: 10; -fx-border-color: lightgrey; -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; -fx-control-inner-background: #149ac9;");
         btnSend.setCursor(Cursor.HAND);
         btnSend.setPrefSize(80,30);
 
         serverInfo.appendText("Connected to Server " + hostInput.getText() + " @ " + new Date() + "\n" + "Logged in as: " + username);
-        chatArea.appendText("Hello " + username + " Welcome to NetChat !");
+        chatArea.appendText("Welcome to NetChat " + username + " !   Type: /help for commands." );
 
         // sends Message when ENTER key is pressed
         msgInput.setOnKeyPressed(actionEvent -> {
@@ -233,8 +225,12 @@ public class NetChatClient extends Application {
                 }
 
                 if (message.equalsIgnoreCase("/exit")) {
-                    Prime.setScene(connectScreen());
-                   // System.exit(0);
+                   // Prime.setScene(connectScreen());
+                    Platform.exit();
+                }
+
+                if (message.equalsIgnoreCase("/help")) {
+                    chatArea.appendText("\n Commands:  \n /exit ---> leaves the Chat \n <*username*> ---> Private Message to selected username");
                 }
 
                 //send message to server

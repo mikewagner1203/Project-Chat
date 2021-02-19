@@ -11,7 +11,7 @@
       <entry name="!?*.kt" />
       <entry name="!?*.clj" />
       <entry name="!?*.aj" />
-      <entry name="?*.css" />
+      <entry name=".css" />
     </wildcardResourcePatterns>
   </component>
 </project>

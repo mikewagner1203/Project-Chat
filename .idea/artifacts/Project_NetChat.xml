@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="Project NetChat">
+    <output-path>$PROJECT_DIR$/out/artifacts/Project_NetChat</output-path>
+    <root id="root">
+      <element id="archive" name="Project_NetChat.jar">
+        <element id="module-output" name="Project NetChat" />
+      </element>
+    </root>
+  </artifact>
+</component>
