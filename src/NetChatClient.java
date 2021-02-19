@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -26,8 +27,9 @@ public class NetChatClient extends Application {
     TextArea userList;
     TextField msgInput;
     TextField usernameInput;
-    TextArea serverInfo;
     TextField hostInput;
+    TextField portInput;
+    TextArea serverInfo;
     String portNr;
     String username;
     Stage Prime;
@@ -36,7 +38,7 @@ public class NetChatClient extends Application {
     @Override
     public void start(Stage primaryStage) {
         Prime = primaryStage;
-       // primaryStage.initStyle(StageStyle.UNDECORATED);
+      //  primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("Project NetChat");
         primaryStage.setScene(connectScreen());
        // connectScreen().getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -50,7 +52,7 @@ public class NetChatClient extends Application {
     private Scene connectScreen() {
         GridPane grid = new GridPane();
         grid.getStyleClass().add("grid");
-        grid.setStyle("-fx-background-color:linear-gradient(#61a2b1, #2A5058)");
+        grid.setStyle("-fx-background-color:linear-gradient(#61a2b1, #2A5058) ");
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(12);
@@ -66,7 +68,7 @@ public class NetChatClient extends Application {
         grid.add(hostInput,1,1);
         hostInput.setPromptText("Enter Host");
 
-        TextField portInput = new TextField(String.valueOf(33030)); // clear this parameter after testing
+        portInput = new TextField(String.valueOf(33030)); // clear this parameter after testing
         portInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #e0cc19; -fx-background-color: transparent; -fx-alignment: center; ");
         grid.add(portInput, 1, 2);
         portInput.setPromptText("Enter Port");
@@ -83,12 +85,12 @@ public class NetChatClient extends Application {
         errorMsg.setTranslateX(70);
 
         Button btnQuit = new Button("Quit");
-        btnQuit.setId("button");
-      //  btnQuit.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
-        btnQuit.setOnAction(actionEvent -> Platform.exit());
+        buttonHover(btnQuit);
 
         Button btnConnect = new Button("Connect to NetChat");
-      //  btnConnect.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
+        buttonHover(btnConnect);
+
+
         btnConnect.setOnAction(actionEvent -> {
             String hostAddress = hostInput.getText();
             portNr = portInput.getText();
@@ -143,9 +145,9 @@ public class NetChatClient extends Application {
     private Scene NetChatView() {
 
         VBox vBox = new VBox(); // Vertikal-box to hold hbox1 and hbox2
-        vBox.setPadding(new Insets(12,12,12,12));
+        vBox.setPadding(new Insets(12,15,12,15));
         vBox.setSpacing(10);
-        vBox.setStyle("-fx-background-color:#549bab;");
+        vBox.setStyle("-fx-background-color:linear-gradient(#61a2b1, #2A5058)");
 
         HBox hbox1 = new HBox(); // Horizontal-box to hold message input and send button
         HBox hbox2 = new HBox(); // Horizontal-box to hold chatarea and userlist
@@ -154,8 +156,8 @@ public class NetChatClient extends Application {
         hbox2.setEffect(new DropShadow(  10, 0.6, 1 , Color.BLACK));
         hbox1.setBackground(Background.EMPTY);
         hbox2.setBackground(Background.EMPTY);
-        hbox1.setSpacing(5);
-        hbox2.setSpacing(5);
+        hbox1.setSpacing(10);
+        hbox2.setSpacing(10);
         hbox3.setSpacing(15);
 
         ScrollPane scrollPane = new ScrollPane(); //pane to display text messages
@@ -166,7 +168,7 @@ public class NetChatClient extends Application {
 
         // define textarea for chatmessages
         chatArea = new TextArea();
-        chatArea.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 15; -fx-border-radius: 10; -fx-font-weight: 600; -fx-border-color: lightgrey; -fx-border-width: 1; -fx-border: gone; -fx-text-fill: #000000; -fx-background-color: transparent; -fx-control-inner-background: #549bab;");
+        chatArea.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 16; -fx-font-weight: 700; -fx-text-fill: #e0cc19; -fx-background-color: transparent; -fx-control-inner-background: rgba(53,89,119,0.8);");
         chatArea.setEditable(false); // makes that text in the chatArea can not be edited after display
 
         // sets size for scrollPane to fit chatArea
@@ -174,34 +176,37 @@ public class NetChatClient extends Application {
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setMinWidth(600);
+        scrollPane.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 );");
 
         userList = new TextArea("Connected Users: " );
         userList.setEditable(false);
-        userList.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 5; -fx-border-color: lightgrey; -fx-border-width: 0; -fx-border: gone; -fx-text-fill: #000000; -fx-background-color: transparent; -fx-control-inner-background: #549bab; ");
+        userList.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-text-fill: #e0cc19; -fx-background-color: transparent; -fx-control-inner-background: rgba(53,89,119,0.9);");
 
         // set size for userPane to fit userlist
         userPane.setContent(userList);
         userPane.setFitToHeight(true);
         userPane.setPrefWidth(200);
         userPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        userPane.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 );");
 
         // define textfield for message input and styling
         msgInput = new TextField();
         msgInput.setPrefHeight(30);
-        msgInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 10; -fx-border-color: lightgrey; -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
+        msgInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14;-fx-background-radius:10; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 ); -fx-border-radius: 13; -fx-border-color: lightgrey; -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #e0cc19; -fx-background-color: linear-gradient(#61a2b1, #2A5058);");
         msgInput.setPromptText("New message....");
+        msgInput.setMinWidth(600);
 
         // define textfield for Server status info
         serverInfo = new TextArea();
         serverInfo.setPrefHeight(35);
-        serverInfo.setStyle("-fx-control-inner-background: black; -fx-font-family: 'Quicksand'; -fx-font-size: 13; -fx-border-color: lightgrey; -fx-border-width: 2; -fx-text-fill: #00ff00; ");
+        serverInfo.setStyle("-fx-control-inner-background: black; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 ); -fx-font-family: 'Quicksand'; -fx-font-size: 13; -fx-border-color: lightgrey; -fx-border-width: 2; -fx-text-fill: #00ff00; ");
         serverInfo.setEditable(false);
 
         // define Send-button and styling
         Button btnSend = new Button("Send");
-        btnSend.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14;-fx-font-weight: 700; -fx-border-radius: 10; -fx-border-color: lightgrey; -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; -fx-control-inner-background: #149ac9;");
+        btnSend.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14;-fx-font-weight: 700; -fx-border-radius: 10; -fx-background-radius:10; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 ); -fx-border-color: lightgrey; -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: linear-gradient(#61a2b1, #2A5058); -fx-control-inner-background: #149ac9;");
         btnSend.setCursor(Cursor.HAND);
-        btnSend.setPrefSize(80,30);
+        btnSend.setPrefSize(135,30);
 
         serverInfo.appendText("Connected to Server " + hostInput.getText() + " @ " + new Date() + "\n" + "Logged in as: " + username);
         chatArea.appendText("Welcome to NetChat " + username + " !   Type: /help for commands." );
@@ -266,6 +271,18 @@ public class NetChatClient extends Application {
         Prime.setMinWidth(800);
         Prime.setMinHeight(600);
         return new Scene(vBox, 800, 600);
+    }
+
+    public void buttonHover(Button button) {
+        button.setCursor(Cursor.HAND);
+        button.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
+        button.setOnMouseEntered(mouseEvent -> {
+            button.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #00ff00 0%, #6aadbd 50%); -fx-border-width: 2; -fx-text-fill: #00ff00; -fx-background-color: transparent; ");
+        });
+        button.setOnMouseExited(mouseEvent -> {
+            button.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
+        });
+
     }
 
 }

@@ -90,7 +90,7 @@ public class ClientConnection implements Runnable {
 
         } else {
             // send Message via broadcast method from server
-            server.broadcast("[" + this.username + "]: " + message);
+            server.broadcast("[" + this.username + "]> " + message);
         }
 
         // not necessary just displays Message from Client in Server Window
