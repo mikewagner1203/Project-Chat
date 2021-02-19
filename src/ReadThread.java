@@ -1,7 +1,9 @@
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ReadThread implements Runnable {
     // Fields
@@ -52,9 +54,11 @@ public class ReadThread implements Runnable {
         client.connectedUsers.clear();
         client.connectedUsers.addAll(Arrays.asList(users));
         client.userList.appendText("Users Online: " + client.connectedUsers.size() + "\n"); // adds list headline and users online count
-        for (int j = 0; j< client.connectedUsers.size(); j++) {
-
-            client.userList.appendText(Arrays.asList(client.connectedUsers.get(j)) + "\n");
+        ArrayList<String> list = client.connectedUsers;
+        StringBuilder builder = new StringBuilder();
+        for (String i : list) {
+            builder.append(i).append("\n").replace(0,1," ");
         }
+        client.userList.appendText(builder.toString().replace("]",""));
     }
 }

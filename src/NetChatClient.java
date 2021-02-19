@@ -11,13 +11,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class NetChatClient extends Application {
     DataInputStream input;
@@ -31,7 +31,7 @@ public class NetChatClient extends Application {
     String portNr;
     String username;
     Stage Prime;
-    List<String> connectedUsers = new ArrayList<>();
+    ArrayList<String> connectedUsers = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) {
