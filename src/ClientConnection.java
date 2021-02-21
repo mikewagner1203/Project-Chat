@@ -88,6 +88,9 @@ public class ClientConnection implements Runnable {
             server.broadcast("ListCall:" + server.userList);
             server.broadcast("\n" + "--> "+ this.username + " <-- has left \n");
 
+        } else if(message.equals("/help")) {
+            server.privateMessage("\n Commands: \n /help ---> shows this  \n /exit ---> leaves the Chat \n <*username*> ---> Private Message to selected username",this.username);
+
         } else {
             // send Message via broadcast method from server
             server.broadcast("[" + this.username + "]> " + message);

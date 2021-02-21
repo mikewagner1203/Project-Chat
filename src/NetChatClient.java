@@ -7,12 +7,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -64,18 +63,24 @@ public class NetChatClient extends Application {
         grid.add(scenetitle, 1, 0);
 
         hostInput = new TextField("localhost"); // clear this parameter after testing
-        hostInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #e0cc19; -fx-background-color: transparent; -fx-alignment: center; ");
+        hostInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #17e8ff; -fx-background-color: transparent; -fx-alignment: center; ");
         grid.add(hostInput,1,1);
+        hostInput.setFocusTraversable(false);
+        textfieldHover(hostInput);
         hostInput.setPromptText("Enter Host");
 
         portInput = new TextField(String.valueOf(33030)); // clear this parameter after testing
-        portInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #e0cc19; -fx-background-color: transparent; -fx-alignment: center; ");
+        portInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #17e8ff; -fx-background-color: transparent; -fx-alignment: center; ");
         grid.add(portInput, 1, 2);
+        portInput.setFocusTraversable(false);
+        textfieldHover(portInput);
         portInput.setPromptText("Enter Port");
 
-        usernameInput = new TextField("testuser"); // clear this parameter after testing
-        usernameInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #e0cc19; -fx-background-color: transparent; -fx-alignment: center; ");
+        usernameInput = new TextField("Tester"); // clear this parameter after testing
+        usernameInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #17e8ff; -fx-background-color: transparent; -fx-alignment: center; ");
         grid.add(usernameInput,1,3);
+        usernameInput.setFocusTraversable(false);
+        textfieldHover(usernameInput);
         usernameInput.setPromptText("Enter Username");
 
         // for connection errors
@@ -86,11 +91,10 @@ public class NetChatClient extends Application {
 
         Button btnQuit = new Button("Quit");
         buttonHover(btnQuit);
+        btnQuit.setOnAction(actionEvent -> System.exit(0));
 
         Button btnConnect = new Button("Connect to NetChat");
         buttonHover(btnConnect);
-
-
         btnConnect.setOnAction(actionEvent -> {
             String hostAddress = hostInput.getText();
             portNr = portInput.getText();
@@ -152,59 +156,59 @@ public class NetChatClient extends Application {
         HBox hbox1 = new HBox(); // Horizontal-box to hold message input and send button
         HBox hbox2 = new HBox(); // Horizontal-box to hold chatarea and userlist
         HBox hbox3 = new HBox(); // Horizontal-box to hold headline and serverinfo
-       // hbox1.setEffect(new DropShadow(  10, 0.6, 1 , Color.BLACK));
         hbox2.setEffect(new DropShadow(  10, 0.6, 1 , Color.BLACK));
-        hbox1.setBackground(Background.EMPTY);
-        hbox2.setBackground(Background.EMPTY);
         hbox1.setSpacing(10);
         hbox2.setSpacing(10);
         hbox3.setSpacing(15);
 
-        ScrollPane scrollPane = new ScrollPane(); //pane to display text messages
-        ScrollPane userPane = new ScrollPane();
+        ScrollPane messagePane = new ScrollPane(); //pane to display text messages
+        ScrollPane userPane = new ScrollPane(); // pane for Users Online List
 
         Text headline = new Text("Project NetChat");
-        headline.setStyle("-fx-font: 35px Verdana; -fx-fill: #9bc9d4; -fx-stroke: black;-fx-text-alignment: center; -fx-stroke-width: 1; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 ); ");
+        headline.setStyle("-fx-font: 35px Verdana; -fx-fill: #9bc9d4; -fx-stroke: black;-fx-text-alignment: center; -fx-stroke-width: 1; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 0.5 ); ");
 
         // define textarea for chatmessages
         chatArea = new TextArea();
-        chatArea.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 16; -fx-font-weight: 700; -fx-text-fill: #e0cc19; -fx-background-color: transparent; -fx-control-inner-background: rgba(53,89,119,0.8);");
+        chatArea.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 16; -fx-font-weight: 600; -fx-text-fill: #17e8ff; -fx-border-style: none; fx-background-color: transparent; -fx-control-inner-background: rgba(53,89,119,0.8);");
         chatArea.setEditable(false); // makes that text in the chatArea can not be edited after display
+        chatArea.setFocusTraversable(false);
+        chatArea.setMouseTransparent(true);
 
         // sets size for scrollPane to fit chatArea
-        scrollPane.setContent(chatArea);
-        scrollPane.setFitToHeight(true);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setMinWidth(600);
-        scrollPane.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 );");
+        messagePane.setContent(chatArea);
+        messagePane.setFitToHeight(true);
+        messagePane.setFitToWidth(true);
+        messagePane.setMinWidth(600);
+        messagePane.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 0.5 ); -fx-background-color: transparent; -fx-border-style: none;");
 
         userList = new TextArea("Connected Users: " );
+        userList.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-text-fill: #17e8ff; -fx-border-style: none; -fx-background-color: transparent; -fx-control-inner-background: rgba(53,89,119,0.8);");
         userList.setEditable(false);
-        userList.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-text-fill: #e0cc19; -fx-background-color: transparent; -fx-control-inner-background: rgba(53,89,119,0.9);");
+        privateMsgClick(userList);
 
         // set size for userPane to fit userlist
         userPane.setContent(userList);
         userPane.setFitToHeight(true);
         userPane.setPrefWidth(200);
         userPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        userPane.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 );");
+        userPane.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 0.5 ); -fx-background-color: transparent; -fx-border-style: none;");
 
         // define textfield for message input and styling
         msgInput = new TextField();
         msgInput.setPrefHeight(30);
-        msgInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14;-fx-background-radius:10; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 ); -fx-border-radius: 13; -fx-border-color: lightgrey; -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #e0cc19; -fx-background-color: linear-gradient(#61a2b1, #2A5058);");
+        msgInput.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14;-fx-background-radius:10; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 0.5 ); -fx-border-radius: 13; -fx-border-color: lightgrey; -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #17e8ff; -fx-background-color: linear-gradient(#61a2b1, #2A5058);");
         msgInput.setPromptText("New message....");
         msgInput.setMinWidth(600);
 
         // define textfield for Server status info
         serverInfo = new TextArea();
         serverInfo.setPrefHeight(35);
-        serverInfo.setStyle("-fx-control-inner-background: black; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 ); -fx-font-family: 'Quicksand'; -fx-font-size: 13; -fx-border-color: lightgrey; -fx-border-width: 2; -fx-text-fill: #00ff00; ");
+        serverInfo.setStyle("-fx-control-inner-background: black; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 0.5 ); -fx-font-family: 'Quicksand'; -fx-font-size: 13; -fx-border-color: lightgrey; -fx-border-width: 1; -fx-text-fill: #17e8ff; ");
         serverInfo.setEditable(false);
 
         // define Send-button and styling
         Button btnSend = new Button("Send");
-        btnSend.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14;-fx-font-weight: 700; -fx-border-radius: 10; -fx-background-radius:10; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 1 ); -fx-border-color: lightgrey; -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: linear-gradient(#61a2b1, #2A5058); -fx-control-inner-background: #149ac9;");
+        btnSend.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14;-fx-font-weight: 700; -fx-border-radius: 10; -fx-background-radius:10; -fx-effect: dropshadow(gaussian, rgba(0,0,0), 10, 0.6, 1 , 0.5 ); -fx-border-color: lightgrey; -fx-border-width: 2; -fx-text-fill: #17e8ff; -fx-background-color: linear-gradient(#61a2b1, #2A5058); -fx-control-inner-background: #149ac9;");
         btnSend.setCursor(Cursor.HAND);
         btnSend.setPrefSize(135,30);
 
@@ -230,12 +234,8 @@ public class NetChatClient extends Application {
                 }
 
                 if (message.equalsIgnoreCase("/exit")) {
-                   // Prime.setScene(connectScreen());
+                   // Prime.setScene(connectScreen()); // <--- Works but resolution buggy
                     Platform.exit();
-                }
-
-                if (message.equalsIgnoreCase("/help")) {
-                    chatArea.appendText("\n Commands:  \n /exit ---> leaves the Chat \n <*username*> ---> Private Message to selected username");
                 }
 
                 //send message to server
@@ -257,8 +257,8 @@ public class NetChatClient extends Application {
         HBox.setHgrow(msgInput, Priority.ALWAYS);  //set textfield to grow as window size grows
 
         // adds chatarea and userList to Hbox2
-        hbox2.getChildren().addAll(scrollPane, userPane);
-        HBox.setHgrow(scrollPane,Priority.ALWAYS);
+        hbox2.getChildren().addAll(messagePane, userPane);
+        HBox.setHgrow(messagePane,Priority.ALWAYS);
 
         hbox3.getChildren().addAll(headline,serverInfo);
         HBox.setHgrow(serverInfo,Priority.ALWAYS);
@@ -275,14 +275,25 @@ public class NetChatClient extends Application {
 
     public void buttonHover(Button button) {
         button.setCursor(Cursor.HAND);
-        button.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
-        button.setOnMouseEntered(mouseEvent -> {
-            button.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #00ff00 0%, #6aadbd 50%); -fx-border-width: 2; -fx-text-fill: #00ff00; -fx-background-color: transparent; ");
-        });
-        button.setOnMouseExited(mouseEvent -> {
-            button.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 50%); -fx-border-width: 2; -fx-text-fill: #e0cc19; -fx-background-color: transparent; ");
-        });
-
+        button.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 80%); -fx-border-width: 2; -fx-text-fill: #c2c2c2; -fx-background-color: transparent; ");
+        button.setOnMouseEntered(mouseEvent -> button.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #17e8ff 0%, #6aadbd 80%); -fx-border-width: 2; -fx-text-fill: #17e8ff; -fx-background-color: transparent; "));
+        button.setOnMouseExited(mouseEvent -> button.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 80%); -fx-border-width: 2; -fx-text-fill: #c2c2c2; -fx-background-color: transparent; "));
     }
 
+    public void textfieldHover(TextField textfield) {
+        textfield.setCursor(Cursor.HAND);
+        textfield.setOnMouseEntered(mouseEvent -> textfield.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #17e8ff 0%, #61a2b1 80%); -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #17e8ff; -fx-background-color: transparent; -fx-alignment: center; "));
+        textfield.setOnMouseExited(mouseEvent -> textfield.setStyle("-fx-font-family: 'Quicksand'; -fx-font-size: 14; -fx-border-radius: 15; -fx-border-color: linear-gradient(from 0% 0% to 100% 200%, repeat, #9bc9d4 0%, #61a2b1 80%); -fx-border-width: 2; -fx-border: gone; -fx-text-fill: #17e8ff; -fx-background-color: transparent; -fx-alignment: center; "));
+    }
+
+    public void privateMsgClick(TextArea textArea) {
+        textArea.setOnMouseClicked(mouseEvent -> {
+            if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+                if(mouseEvent.getClickCount() == 2){
+                    msgInput.appendText("<" + textArea.getSelectedText() + ">");
+                    textArea.deselect();
+                }
+            }
+        });
+    }
 }
