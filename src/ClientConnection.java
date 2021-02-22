@@ -83,13 +83,13 @@ public class ClientConnection implements Runnable {
                 server.privateMessage(targetUser + " is not available ! \n", username);
             }
 
-        } else if(message.equals("/exit")) {
+        } else if(message.equals("/exit") || message.equals("/logout")) {
             server.userList.remove(this.username);
             server.broadcast("ListCall:" + server.userList);
             server.broadcast("\n" + "--> "+ this.username + " <-- has left \n");
 
         } else if(message.equals("/help")) {
-            server.privateMessage("\n Commands: \n /help ---> shows this  \n /exit ---> leaves the Chat \n <*username*> ---> Private Message to selected username",this.username);
+            server.privateMessage("\n NetChat Commands: \n /help ---> shows this  \n /exit ---> leaves the Chat \n For Private message type <*username*> \n or double click username in the Userlist on the right side",this.username);
 
         } else {
             // send Message via broadcast method from server
