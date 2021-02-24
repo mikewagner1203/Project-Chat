@@ -37,7 +37,7 @@ public class ClientConnection implements Runnable {
                 // Get Message from Client
                 String message = input.readUTF();
 
-                 //Broadcasts Messages and handles private messages.
+                // Broadcasts Messages and handles private messages and chat-commands
                 chatListener(message);
             }
 
@@ -54,7 +54,7 @@ public class ClientConnection implements Runnable {
         }
     }
 
-    //sends message back to client
+    // sends message back to client
     public void sendMessage(String message) {
         try {
             output.writeUTF(message);
@@ -93,7 +93,7 @@ public class ClientConnection implements Runnable {
 
         } else {
             // send Message via broadcast method from server
-            server.broadcast("[" + this.username + "]> " + message);
+            server.broadcast("[" + this.username + "]: " + message);
         }
 
         // not necessary just displays Message from Client in Server Window

@@ -1,6 +1,5 @@
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -100,7 +99,7 @@ public class NetChatClient extends Application {
                 usernameInput.setPromptText("Please enter a Username");
                 errorMsg.setText("Invalid Login");
 
-            } else {  // Starts connection to server when login is valid
+            } else { // Starts connection to server when login is valid
 
                 try {
                     // Create a socket to connect to the server
@@ -121,7 +120,7 @@ public class NetChatClient extends Application {
 
                 } catch (IOException e) {
                     errorMsg.setText("Connecting to Server failed");
-              //      e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
         });
@@ -151,6 +150,7 @@ public class NetChatClient extends Application {
         HBox hbox3 = new HBox(); // Horizontal-box to hold headline and serverinfo
         hbox1.setEffect(new DropShadow(  10, 0.6, 1 , Color.BLACK));
         hbox2.setEffect(new DropShadow(  10, 0.6, 1 , Color.BLACK));
+        hbox3.setEffect(new DropShadow(  10, 0.6, 1 , Color.BLACK));
         hbox1.setSpacing(10);
         hbox2.setSpacing(10);
         hbox3.setSpacing(15);

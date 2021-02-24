@@ -26,7 +26,7 @@ public class NetChatServer extends Application {
         serverStatusInfo = new TextArea();
         serverStatusInfo.setEditable(false);
 
-        scrollPane = new ScrollPane();   //pane to display text messages
+        scrollPane = new ScrollPane();  //pane to display text messages
         scrollPane.setContent(serverStatusInfo);
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
@@ -83,6 +83,7 @@ public class NetChatServer extends Application {
         }
     }
 
+    //sends message to specified User
     public void privateMessage(String privateMessage, String targetUser) {
         for(ClientConnection aUser:clientList) {
             if(aUser.username.equals(targetUser)) {

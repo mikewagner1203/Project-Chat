@@ -18,7 +18,6 @@ public class ReadThread implements Runnable {
 
     @Override
     public void run() {
-
         while(true) {
 
             try {
@@ -27,8 +26,6 @@ public class ReadThread implements Runnable {
 
                 // get Input from Client
                 String message = input.readUTF();
-
-                // Works but output not Good !!!!
 
                 if(message.startsWith("ListCall:")) {
                     client.userList.clear();
@@ -56,7 +53,7 @@ public class ReadThread implements Runnable {
         ArrayList<String> list = client.connectedUsers;
         StringBuilder builder = new StringBuilder();
         for (String i : list) {
-            builder.append(i).append("\n").replace(0,1," ");
+            builder.append(i).append("\n").replace(0,1,"");
         }
         client.userList.appendText(builder.toString().replace("]",""));
     }
